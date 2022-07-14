@@ -9,8 +9,16 @@ import (
 
 func Create_user(c *gin.Context) {
 	var new_user = &models.User{NAME: c.PostForm("name"), LASTNAME: c.PostForm("lastname"), AGE: c.PostForm("age")}
-	configs.DB.Create(&new_user)
-	c.JSON(200, gin.H{
-		"User_created": &new_user,
-	})
+	rs := configs.DB.Create(&new_user)
+
+	if rs.Error != nil {
+		c.JSON(400, gin.H{
+			"Error": "Error while creating user",
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"User_created": &new_user,
+		})
+	}
+
 }

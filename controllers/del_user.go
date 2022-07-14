@@ -8,10 +8,16 @@ import (
 
 func Del_user(c *gin.Context) {
 
-	configs.DB.First(&user, c.Param("id"))
+	rs := configs.DB.First(&user, c.Param("id"))
 	configs.DB.Delete(&user)
-	c.JSON(200, gin.H{
-		"User_deleted": &user,
-	})
+	if rs.Error != nil {
+		c.JSON(400, gin.H{
+			"Error": "Error while deleting user",
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"User_deleted": &user,
+		})
 
+	}
 }
