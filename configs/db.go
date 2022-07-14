@@ -1,15 +1,19 @@
 package configs
 
 import (
+	"hello-go-crud/models"
 	"log"
 	"os"
 
 	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func InitDB() *gorm.DB {
+var user = &models.User{}
+var DB *gorm.DB
+
+func InitDB() {
 	//read .env file
 	err := godotenv.Load()
 	if err != nil {
@@ -18,11 +22,15 @@ func InitDB() *gorm.DB {
 	DB_HOST := os.Getenv("DB_HOST")
 	DB_PORT := os.Getenv("DB_PORT")
 	DB_USER := os.Getenv("DB_USER")
-	DB_PASS := os.Getenv("DB_PASS")
+	DB_PASS := os.Getenv("DB_PASSWORD")
 	DB_NAME := os.Getenv("DB_NAME")
 
 	//init db connection
-	dsn := "host=" + DB_HOST + " user=" + DB_USER + " password=" + DB_PASS + " dbname=" + DB_NAME + " port=" + DB_PORT + " sslmode=disable TimeZone=Asia/Shanghai"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	return db
+	dsn := DB_USER + ":" + DB_PASS + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Error while connecting to database %s", err)
+	}
+	DB = db
+	DB.AutoMigrate(user)
 }
