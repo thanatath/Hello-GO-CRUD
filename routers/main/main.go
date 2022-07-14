@@ -20,6 +20,6 @@ func SetupRouter() *gin.Engine {
 	router.POST("/create_user", controllers.Create_user)
 	router.GET("/get_user", controllers.Get_user)
 	router.PATCH("/update_user/:id", controllers.Update_user)
-	//router.DELETE("/del_user", Del_user)
+	router.DELETE("/del_user/:id", controllers.Del_user)
 	return router
 }

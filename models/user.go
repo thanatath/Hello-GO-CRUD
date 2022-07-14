@@ -1,13 +1,13 @@
 package models
 
 type User struct {
-	ID       string `gorm:"primary_key" json:"id"`
+	ID       uint   `gorm:"primary_key" json:"id" autoIncrement:"true"`
 	NAME     string `gorm:"not null" json:"name"`
 	LASTNAME string `gorm:"not null" json:"lastname"`
 	AGE      string `gorm:"not null" json:"age"`
 }
 
-func (u *User) GetId() string {
+func (u *User) GetId() uint {
 	return u.ID
 }
 
@@ -24,7 +24,7 @@ func (u *User) GetAge() string {
 	return u.AGE
 }
 
-func (u *User) SetId(id string) {
+func (u *User) SetId(id uint) {
 	u.ID = id
 }
 
