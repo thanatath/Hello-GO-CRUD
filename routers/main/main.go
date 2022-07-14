@@ -17,7 +17,7 @@ func Run(port string) {
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	//router.GET("/", Index)
-	//router.POST("/create_user", Create_user)
+	router.POST("/create_user", controllers.Create_user)
 	router.GET("/get_user", controllers.Get_user)
 	//router.PATCH("/update_user", Update_user)
 	//router.DELETE("/del_user", Del_user)
